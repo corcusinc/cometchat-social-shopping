@@ -14,8 +14,10 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function Header () {
+export default function Header (props: {handleLoginClick: Function}) {
   const classes = useStyles()
+
+  const onLoginClick = () => props.handleLoginClick()
 
   return (
     <React.Fragment>
@@ -25,7 +27,7 @@ export default function Header () {
 
           <Button>Shops</Button>
           <Button>Messages</Button>
-          <Button>Login</Button>
+          <Button onClick={onLoginClick}>Login</Button>
         </Toolbar>
       </AppBar >
 

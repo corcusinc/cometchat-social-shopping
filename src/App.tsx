@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-import { Header, SellersPage } from './components'
+import { Header, SellersPage, LoginDialog } from './components'
 import { Box, Container, ThemeProvider } from '@material-ui/core'
 import { createMuiTheme, makeStyles, createStyles, Theme } from '@material-ui/core/styles'
 
@@ -41,10 +41,30 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function App () {
   const classes = useStyles()
 
+  const [loginPopupOpen, setLoginPopupOpen] = useState(false)
+  const [isLoggingIn, setIsLoggingIn] = useState(false)
+
+  const handleLogin = async (email: string, password: string, setError: Function) => {
+    setIsLoggingIn(true)
+
+    // TODO: add auth logic
+    await new Promise(resolve => setTimeout(resolve, 200))
+
+    if (email?.length > 0 && password?.length > 0) {
+      console.log(`Logging in user ${email}`)
+      setLoginPopupOpen(false)
+      setError('')
+    } else {
+      setError('Invalid email/password combination')
+    }
+
+    setIsLoggingIn(false)
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <header>
-        <Header />
+        <Header handleLoginClick={() => setLoginPopupOpen(true)}/>
       </header>
 
       <main>
@@ -56,6 +76,8 @@ export default function App () {
       <footer>
         <Box mt={theme.spacing(0.5)} py={theme.spacing(0.5)} className={classes.footer}></Box>
       </footer>
+
+      <LoginDialog open={loginPopupOpen} isLoggingIn={isLoggingIn} handleClose={() => setLoginPopupOpen(false)} handleLogin={handleLogin} />
     </ThemeProvider>
   )
 }
