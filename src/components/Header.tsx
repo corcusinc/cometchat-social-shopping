@@ -3,6 +3,9 @@ import React from 'react'
 import { AppBar, Toolbar, Typography, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
+import { useAuth } from '../contexts/AuthProvider'
+import { useUser } from '../contexts/UserProvider'
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -15,6 +18,8 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function Header (props: {handleLoginClick: Function}) {
+  const auth = useAuth()!
+  const user = useUser()
   const classes = useStyles()
 
   const onLoginClick = () => props.handleLoginClick()
@@ -27,7 +32,11 @@ export default function Header (props: {handleLoginClick: Function}) {
 
           <Button>Shops</Button>
           <Button>Messages</Button>
-          <Button onClick={onLoginClick}>Login</Button>
+          {
+            user
+              ? <Button onClick={auth.logOut}>Logout</Button>
+              : <Button onClick={onLoginClick}>Login</Button>
+          }
         </Toolbar>
       </AppBar >
 
