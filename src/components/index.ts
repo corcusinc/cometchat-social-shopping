@@ -1,11 +1,11 @@
 import Header from './Header'
 import LoginDialog from './LoginDialog'
-import MerchantCard from './MerchantCard'
-import SellersPage from './SellersPage'
+import ShopCard from './ShopCard'
+import ShopsPage from './ShopsPage'
 
 export {
   Header,
   LoginDialog,
-  MerchantCard,
-  SellersPage
+  ShopCard,
+  ShopsPage
 }

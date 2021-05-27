@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import { Box, Container, ThemeProvider } from '@material-ui/core'
 import { createMuiTheme, makeStyles, createStyles, Theme } from '@material-ui/core/styles'
 
-import { Header, SellersPage, LoginDialog } from './components'
+import { Header, ShopsPage, LoginDialog } from './components'
+import { useUser } from './contexts/UserProvider'
 
 const theme = createMuiTheme({
   palette: {
@@ -40,19 +41,22 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 export default function App () {
+  const user = useUser()
   const classes = useStyles()
-
-  const [loginPopupOpen, setLoginPopupOpen] = useState(false)
 
   return (
     <ThemeProvider theme={theme}>
       <header>
-        <Header handleLoginClick={() => setLoginPopupOpen(true)}/>
+        <Header />
       </header>
 
       <main>
         <Container fixed={false} maxWidth={false} className={classes.root}>
-          <SellersPage />
+          {
+            user
+              ? <ShopsPage />
+              : <Box height="100vh" />
+          }
         </Container>
       </main>
 
@@ -60,7 +64,7 @@ export default function App () {
         <Box mt={theme.spacing(0.5)} py={theme.spacing(0.5)} className={classes.footer}></Box>
       </footer>
 
-      <LoginDialog open={loginPopupOpen} handleClose={() => setLoginPopupOpen(false)} />
+      <LoginDialog open={!user} />
     </ThemeProvider>
   )
 }

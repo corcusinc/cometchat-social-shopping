@@ -1,29 +1,35 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Snackbar } from '@material-ui/core'
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Snackbar, makeStyles, createStyles } from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert'
 
 import { useAuth } from '../contexts/AuthProvider'
-import { useUser } from '../contexts/UserProvider'
 
-export default function LoginDialog (props: {open: boolean, handleClose: Function}) {
+const useStyles = makeStyles(() =>
+  createStyles({
+    dialogActions: {
+      justifyContent: 'center'
+    }
+  })
+)
+
+export default function LoginDialog (props: {open: boolean}) {
   const auth = useAuth()!
-  const user = useUser()
   const emailInputRef: React.MutableRefObject<HTMLInputElement | undefined> = useRef()
   const passwordInputRef: React.MutableRefObject<HTMLInputElement | undefined> = useRef()
+  const [showError, setShowError] = useState(false)
 
-  const handleClose = () => props.handleClose()
+  const styles = useStyles()
+
   const handleLogin = async () => {
-    await auth.logIn(emailInputRef.current?.value ?? '', passwordInputRef.current?.value ?? '')
+    const success = await auth.logIn(emailInputRef.current?.value ?? '', passwordInputRef.current?.value ?? '')
 
-    if (auth.state.status === 'success') {
-      handleClose()
-    }
+    setShowError(!success)
   }
 
   return (
     <React.Fragment>
-      <Dialog open={!user && props.open} onClose={handleClose}>
+      <Dialog open={props.open}>
         <DialogTitle id="form-dialog-title">Login</DialogTitle>
         <DialogContent>
           <form noValidate autoComplete="off">
@@ -43,17 +49,14 @@ export default function LoginDialog (props: {open: boolean, handleClose: Functio
               inputRef={passwordInputRef} />
           </form>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
+        <DialogActions className={styles.dialogActions}>
           <Button onClick={handleLogin} disabled={auth.state.status === 'pending'} color="primary">
             Login
           </Button>
         </DialogActions>
       </Dialog>
 
-      <Snackbar open={auth.state.status === 'error'} autoHideDuration={3000}>
+      <Snackbar open={showError} autoHideDuration={3000} onClose={() => setShowError(false)}>
         <MuiAlert severity="error" elevation={6} variant="filled">
           {auth.state.error}
         </MuiAlert>
