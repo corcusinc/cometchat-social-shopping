@@ -8,11 +8,15 @@
         },
         "_shopId": {
             "bsonType": "objectId"
+        },
+        "name": {
+            "bsonType": "string"
         }
     },
     "required": [
         "_id",
-        "_accountId"
+        "_accountId",
+        "name"
     ],
     "title": "User"
 }
