@@ -13,4 +13,14 @@ export class Shop {
     this.description = description
     this.logoUrl = logoUrl
   }
+
+  static fromJson (json: any): Shop {
+    return new Shop(
+      json._id,
+      json.owner._id,
+      json.name,
+      json.description,
+      json.logoUrl
+    )
+  }
 }

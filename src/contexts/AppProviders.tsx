@@ -9,7 +9,7 @@ export default function AppProviders (props: any) {
     <RealmProvider>
       <AuthProvider>
         <UserProvider>
-        { props.children }
+          { props.children }
         </UserProvider>
       </AuthProvider>
     </RealmProvider>

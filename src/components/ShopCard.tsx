@@ -1,8 +1,9 @@
 import React from 'react'
 
 import { Button, Card, CardActions, CardContent, CardMedia, makeStyles, Typography } from '@material-ui/core'
-import { mockShops } from '../data/'
+
 import { useUser } from '../contexts/UserProvider'
+import { Shop } from '../models'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,30 +20,25 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function ShopCard (props: {shopId: string}) {
+export default function ShopCard (props: {shop: Shop}) {
   const user = useUser()
 
   const classes = useStyles()
 
-  const shop = mockShops.find(shop => shop.id === props.shopId)
-  if (shop === undefined) {
-    return <React.Fragment />
-  }
-
   return <Card variant="outlined" className={classes.root}>
     <CardMedia
       component="img"
-      alt={shop.name}
+      alt={props.shop.name}
       height="auto"
-      image={shop.logoUrl}
-      title={shop.name}
+      image={props.shop.logoUrl}
+      title={props.shop.name}
       className={classes.media}
     />
 
     <CardContent>
-      <Typography variant='subtitle2' color='textSecondary' gutterBottom>{shop.name}</Typography>
+      <Typography variant='subtitle2' color='textSecondary' gutterBottom>{props.shop.name}</Typography>
 
-      <Typography variant="body2" color="textPrimary" component="p">{shop.description}</Typography>
+      <Typography variant="body2" color="textPrimary" component="p">{props.shop.description}</Typography>
     </CardContent>
 
     {

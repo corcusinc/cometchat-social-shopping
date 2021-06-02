@@ -1,5 +1,6 @@
 import React from 'react'
 import * as Realm from 'realm-web'
+import { useApolloClient } from '@apollo/client'
 
 import { NullableUser, User } from '../models'
 import { useRealm } from './RealmProvider'
@@ -25,8 +26,10 @@ export function AuthProvider (props: any) {
   })
 
   const realmApp = useRealm()!
+  const apolloClient = useApolloClient()!
 
   React.useEffect(() => {
+    realmApp.currentUser?.refreshCustomData()
     setState({
       status: 'success',
       user: realmApp.currentUser?.isLoggedIn
@@ -40,7 +43,6 @@ export function AuthProvider (props: any) {
 
     try {
       const user = await realmApp.logIn(Realm.Credentials.emailPassword(email, password))
-      console.log(user)
 
       setState({
         status: 'success',
@@ -63,6 +65,7 @@ export function AuthProvider (props: any) {
   }
 
   const logOut = async () => {
+    await apolloClient.resetStore()
     await realmApp.currentUser?.logOut()
     setState({ status: 'success', user: null })
   }
