@@ -1,0 +1,18 @@
+{
+    "properties": {
+        "_accountId": {
+            "bsonType": "string"
+        },
+        "_id": {
+            "bsonType": "objectId"
+        },
+        "_shopId": {
+            "bsonType": "objectId"
+        }
+    },
+    "required": [
+        "_id",
+        "_accountId"
+    ],
+    "title": "User"
+}
