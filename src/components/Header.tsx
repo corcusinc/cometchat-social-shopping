@@ -18,27 +18,19 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-function HeaderButtons (props: {user: NullableUser, handleLogoutClick: Function}) {
+function HeaderButtons (props: {user: NullableUser, handleLogoutClick: Function, setActivePage: Function}) {
   if (!props.user) {
     return <Button>Login</Button>
   }
 
-  if (props.user.isShopOwner()) {
-    return <React.Fragment>
-      <Button>My Shop</Button>
-      <Button>Messages</Button>
-      <Button onClick={() => props.handleLogoutClick()}>Logout</Button>
-    </React.Fragment>
-  }
-
   return <React.Fragment>
-    <Button>Shops</Button>
-    <Button>Messages</Button>
+    <Button onClick={() => props.setActivePage('shops')}>{props.user.isShopOwner() ? 'My Shop' : 'Shops'}</Button>
+    <Button onClick={() => props.setActivePage('messages')}>Messages</Button>
     <Button onClick={() => props.handleLogoutClick()}>Logout</Button>
   </React.Fragment>
 }
 
-export default function Header () {
+export default function Header (props: {setActivePage: Function}) {
   const auth = useAuth()!
   const user = useUser()
   const classes = useStyles()
@@ -49,7 +41,7 @@ export default function Header () {
         <Toolbar>
           <Typography variant="h6" className={classes.title}>Sosho Shop</Typography>
 
-          <HeaderButtons user={user} handleLogoutClick={auth.logOut} />
+          <HeaderButtons user={user} handleLogoutClick={auth.logOut} setActivePage={props.setActivePage} />
         </Toolbar>
       </AppBar >
 
