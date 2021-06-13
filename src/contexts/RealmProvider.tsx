@@ -5,7 +5,7 @@ import { ApolloClient, ApolloProvider, HttpLink, InMemoryCache } from '@apollo/c
 
 const RealmContext = React.createContext<Realm.App | undefined>(undefined)
 
-const REALM_APP_ID = process.env.REACT_APP_SOSHO_SHOP_REALM_APP_ID!
+const REALM_APP_ID = '<REALM_APP_ID>'
 const graphqlUri = `https://realm.mongodb.com/api/client/v2.0/app/${REALM_APP_ID}/graphql`
 
 export function RealmProvider (props: any) {
