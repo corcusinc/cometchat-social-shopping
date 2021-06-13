@@ -1,0 +1,27 @@
+{
+    "properties": {
+        "_id": {
+            "bsonType": "objectId"
+        },
+        "_ownerId": {
+            "bsonType": "objectId"
+        },
+        "description": {
+            "bsonType": "string"
+        },
+        "logoUrl": {
+            "bsonType": "string"
+        },
+        "name": {
+            "bsonType": "string"
+        }
+    },
+    "required": [
+        "_id",
+        "_ownerId",
+        "name",
+        "description",
+        "logoUrl"
+    ],
+    "title": "Shop"
+}
