@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function ShopCard (props: {shop: Shop, handleMessageSeller?: Function}) {
+export default function ShopCard (props: {shop: Shop}) {
   const user = useUser()
 
   const classes = useStyles()
@@ -45,7 +45,7 @@ export default function ShopCard (props: {shop: Shop, handleMessageSeller?: Func
       user?.isShopOwner()
         ? <React.Fragment />
         : <CardActions className={classes.actions} hidden={user?.isShopOwner()}>
-            <Button size='small' className={classes.button} onClick={() => props.handleMessageSeller!(props.shop.ownerId)}>MESSAGE SELLER</Button>
+            <Button size='small' className={classes.button}>MESSAGE SELLER</Button>
           </CardActions>
     }
   </Card>

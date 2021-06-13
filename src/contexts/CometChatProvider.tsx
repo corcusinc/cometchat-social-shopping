@@ -38,11 +38,11 @@ export function CometChatProvider (props: any) {
   const user = useUser()
 
   useEffect(() => {
-    if (isInitializing || isLoggingIn) {
+    if (isInitializing) {
       return
     }
 
-    if (CometChat.isInitialized()) {
+    if (CometChat.isInitialized() && !isLoggingIn) {
       if (user) {
         setIsLoggingIn(true)
         logIn(user).then(() => setIsLoggingIn(false))

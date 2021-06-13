@@ -11,9 +11,6 @@
         },
         "name": {
             "bsonType": "string"
-        },
-        "email": {
-            "bsonType": "string"
         }
     },
     "required": [

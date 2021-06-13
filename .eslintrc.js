@@ -21,6 +21,5 @@ module.exports = {
   ],
   rules: {
     'no-use-before-define': 'off'
-  },
-  ignorePatterns: ['src/cometchat/**/*.js']
+  }
 }

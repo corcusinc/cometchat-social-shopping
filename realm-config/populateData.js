@@ -2,12 +2,12 @@ const Realm = require('realm')
 const MongoClient = require('mongodb').MongoClient
 const fetch = require('node-fetch')
 
-const REALM_APP_ID = '<REALM_APP_ID>'
+const REALM_APP_ID = process.env.REACT_APP_SOSHO_SHOP_REALM_APP_ID
 const realmApp = new Realm.App({ id: REALM_APP_ID })
 
 const MONGODB_USER = '<MONGODB_USER>'
 const MONGODB_PASSWORD = '<MONGODB_PASSWORD>'
-const uri = `mongodb+srv://${MONGODB_USER}:${MONGODB_PASSWORD}@test-cluster.nzcsc.mongodb.net/sosho-shop?retryWrites=true&w=majority`
+const uri = `mongodb+srv://${MONGODB_USER}:${MONGODB_PASSWORD}@cluster0.nzcsc.mongodb.net/sosho-shop?retryWrites=true&w=majority`
 const mongoClient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true })
 
 const COMETCHAT_API_ENDPOINT = 'https://api-us.cometchat.io/v2.0'
@@ -53,12 +53,10 @@ async function main () {
 
     await profilesCollection.insertMany([{
       _accountId: user1.id,
-      name: 'John Smith',
-      email: 'user1@email.com'
+      name: 'John Smith'
     }, {
       _accountId: user2.id,
-      name: 'Alicia Woods',
-      email: 'user2@email.com'
+      name: 'Alicia Woods'
     }])
 
     const owner1 = await realmApp.logIn(Realm.Credentials.emailPassword('owner1@email.com', 'password'))
