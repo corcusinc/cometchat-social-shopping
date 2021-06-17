@@ -1,70 +1,29 @@
-# Getting Started with Create React App
+# sosho-shop
+sosho-shop is a demo app created to demonstrate how to integrate Cometchat into an online marketplace for a social shopping experience. It is built using Typescript/React for the frontend, MongoDB Atlas for data storage, MongoDB Realm for authentication and querying Atlas data, and Cometchat for the chat integration.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Repo breakdown
+The main branch of this repo contains the final code needed to spin up this demo site locally as well as mongodb/realm config that you can use to import the Realm app into your own Realm project using `realm-cli`. You can see run snapshots of the site at various "checkpoints" by using the `checkpoint-#` tags. Here is a breakdown of the various checkpoints
 
-## Available Scripts
+- `checkpoint-1`: Frontend with mock authentication
+    - See [AuthProvider.tsx](./src/contexts/AuthProvider.tsx) for mock usernames & passwords.
+- `checkpoint-2`: Integrate Realm for authentication and fetch shops from MongoDB using Realm graphql endpoints
+    - This can easily be swapped out with any backend as a service platform (e.g. Firebase) by simply updating the authentication functions in [AuthProvider.tsx](./src/contexts/AuthProvider.tsx)
+- `checkpoint-3`: Integrate cometchat login in Auth workflow
+- `checkpoint-4`: Integrate Cometchat's React UIKit to message sellers
+- `checkpoint-5`: TODO
 
-In the project directory, you can run:
+## Set up
+**NOTE**: In order to run the app starting from `checkpoint-2`, you must have set up the Realm backend (or swap it out for your own!). Alternatively, you can use a Realm app hosted by us if you would like to avoid the additional set up.
 
-### `yarn start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. Set up Mongodb/Realm and populate data (skip if using our hosted Realm app or your own backend)
+    - Follow steps in [realm-config/README.md](./realm-config/README.md)
+2. Populate Cometchat data
+    - Create Cometchat account
+    - Generate API key and replace `COMETCHAT_APP_ID`, `COMETCHAT_AUTH_KEY` and `COMETCHAT_API_KEY` in the repo with your values.
+    From [data](data) folder, run `node populateCometchatData.js` to populate your Cometchat app with the Realm users.
+        - This will need to be updated if swapping out for a different Authentication provider
+3. Install dependencies
+    - `npm install` or `yarn`
+4. Run app!
+    - `npm run start` or `yarn start` runs the app in the development mode
+    - Open [http://localhost:3000](http://localhost:3000) to view it in the browser.

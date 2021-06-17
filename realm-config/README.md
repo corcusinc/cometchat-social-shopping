@@ -34,4 +34,4 @@ https://docs.mongodb.com/realm/deploy/realm-cli-reference
     - Click "Add Your Current IP Address" -> "Add IP Address"
     - Create a database user using the form under "Create a Database User"
       - Note the username & password and use them to replace instances of <MONGODB_USER> and <MONGODB_PASSWORD> respectively in the code
-  - `node populateData.js`
+  - From [../data](../data) folder, run `node populateRealmData.js`
