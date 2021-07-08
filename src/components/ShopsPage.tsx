@@ -47,7 +47,7 @@ function OwnerShopPage () {
   )
 }
 
-function CustomerShopPage () {
+function CustomerShopPage (props: {handleMessageSeller: Function}) {
   const theme = useTheme()
 
   const { loading, error, data } = useQuery(gql`
@@ -60,7 +60,7 @@ function CustomerShopPage () {
         name
       }
     }
-  `, { fetchPolicy: 'no-cache' })
+  `)
 
   if (loading) {
     return <Typography variant='h6'>Shops</Typography>
@@ -79,9 +79,9 @@ function CustomerShopPage () {
 
       <GridList cellHeight='auto' spacing={64} cols={3}>
         {
-          data.shops.map((shopJson: any) => {
+          data?.shops?.map((shopJson: any) => {
             const shop = Shop.fromJson(shopJson)
-            return <GridListTile key={shop.id}><ShopCard shop={shop} /></GridListTile>
+            return <GridListTile key={shop.id}><ShopCard shop={shop} handleMessageSeller={props.handleMessageSeller} /></GridListTile>
           })
         }
       </GridList>
@@ -89,10 +89,10 @@ function CustomerShopPage () {
   )
 }
 
-export default function ShopsPage () {
+export default function ShopsPage (props: {handleMessageSeller: Function}) {
   const user = useUser()
 
   return user?.isShopOwner()
     ? <OwnerShopPage />
-    : <CustomerShopPage />
+    : <CustomerShopPage handleMessageSeller={props.handleMessageSeller} />
 }
