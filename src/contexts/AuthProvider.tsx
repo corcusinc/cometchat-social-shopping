@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import * as Realm from 'realm-web'
 import { useApolloClient } from '@apollo/client'
 
@@ -28,7 +28,7 @@ export function AuthProvider (props: any) {
   const realmApp = useRealm()!
   const apolloClient = useApolloClient()!
 
-  React.useEffect(() => {
+  useEffect(() => {
     realmApp.currentUser?.refreshCustomData()
     setState({
       status: 'success',
