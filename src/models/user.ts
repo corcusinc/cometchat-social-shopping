@@ -1,20 +1,20 @@
-import { mockShops } from '../data'
-import { Shop } from './shop'
+import * as Realm from 'realm-web'
 
 export class User {
   id: string;
-  shop?: Shop;
+  shopId?: string;
 
-  constructor (id: string, shopId: string | null) {
+  constructor (id: string, shopId?: string) {
     this.id = id
+    this.shopId = shopId
+  }
 
-    if (shopId !== undefined) {
-      this.shop = mockShops.find((shop) => shop.id === shopId)
-    }
+  static fromRealmUser (realmUser: Realm.User): User {
+    return new User(realmUser.id, realmUser.customData?._shopId?.$oid)
   }
 
   isShopOwner (): boolean {
-    return this.shop !== undefined
+    return this.shopId !== undefined
   }
 }
 

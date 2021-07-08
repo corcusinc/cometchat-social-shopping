@@ -1,6 +1,9 @@
 import React from 'react'
+import * as Realm from 'realm-web'
+import { useApolloClient } from '@apollo/client'
 
 import { NullableUser, User } from '../models'
+import { useRealm } from './RealmProvider'
 
 export interface AuthProviderState {
   status: 'success' | 'pending' | 'error';
@@ -16,34 +19,21 @@ export interface AuthProviderData {
 
 const AuthContext = React.createContext<AuthProviderData | undefined>(undefined)
 
-const mockCustomer = {
-  email: 'customer1@email.com',
-  password: 'password',
-
-  id: 'customer1'
-}
-
-const mockShopOwner = {
-  email: 'owner1@email.com',
-  password: 'password',
-
-  id: 'owner1',
-  shopId: 'shop1'
-}
-
 export function AuthProvider (props: any) {
   const [state, setState] = React.useState<AuthProviderState>({
     status: 'pending',
     user: null
   })
 
-  React.useEffect(() => {
-    const userId = localStorage.getItem('userId')
+  const realmApp = useRealm()!
+  const apolloClient = useApolloClient()!
 
+  React.useEffect(() => {
+    realmApp.currentUser?.refreshCustomData()
     setState({
       status: 'success',
-      user: userId
-        ? new User(userId, localStorage.getItem('shopId'))
+      user: realmApp.currentUser?.isLoggedIn
+        ? User.fromRealmUser(realmApp.currentUser)
         : null
     })
   }, [])
@@ -51,40 +41,32 @@ export function AuthProvider (props: any) {
   const logIn = async (email: string, password: string) => {
     setState({ status: 'pending', user: null })
 
-    if (email === mockCustomer.email && password === mockCustomer.password) {
-      localStorage.setItem('userId', mockCustomer.id)
+    try {
+      const user = await realmApp.logIn(Realm.Credentials.emailPassword(email, password))
 
       setState({
         status: 'success',
-        user: new User(mockCustomer.id, null)
+        user: User.fromRealmUser(user)
       })
 
       return true
-    }
-
-    if (email === mockShopOwner.email && password === mockShopOwner.password) {
-      localStorage.setItem('userId', mockShopOwner.id)
-      localStorage.setItem('shopId', mockShopOwner.shopId)
-
+    } catch (err) {
+      console.log(err)
       setState({
-        status: 'success',
-        user: new User(mockShopOwner.id, mockShopOwner.shopId)
+        status: 'error',
+        error: err instanceof Realm.MongoDBRealmError
+          ? err.error
+          : 'Could not login, please try again.',
+        user: null
       })
 
-      return true
+      return false
     }
-
-    setState({
-      status: 'error',
-      error: 'Invalid email/password',
-      user: null
-    })
-
-    return false
   }
 
   const logOut = async () => {
-    localStorage.clear()
+    await apolloClient.resetStore()
+    await realmApp.currentUser?.logOut()
     setState({ status: 'success', user: null })
   }
 

@@ -1,0 +1,8 @@
+{
+    "_ownerId": {
+        "ref": "#/relationship/mongodb-atlas/sosho-shop/User",
+        "source_key": "_ownerId",
+        "foreign_key": "_id",
+        "is_list": false
+    }
+}
